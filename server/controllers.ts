@@ -1,8 +1,7 @@
 import type { Request, Response } from "express";
 import { PrismaClient } from '@prisma/client';
-import { TaskQuery } from "@/types/task";
 import z from "zod";
-import { createTaskSchema, taskIdParamsSchema, updateTaskSchema } from "@/types/schema";
+import { createTaskSchema, taskIdParamsSchema, updateTaskSchema } from "../types/schema.ts";
 
 const prisma = new PrismaClient();
 

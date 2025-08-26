@@ -1,7 +1,7 @@
 import express from 'express';
-import { TaskControllers } from './controllers';
-import { validate } from './middleware';
-import { createTaskSchema, taskIdParamsSchema, updateTaskSchema } from '@/types/schema';
+import { TaskControllers } from './controllers.ts';
+import { validate } from './middleware.ts';
+import { createTaskSchema, taskIdParamsSchema, updateTaskSchema } from '../types/schema.ts';
 
 const routers = express.Router();
 
