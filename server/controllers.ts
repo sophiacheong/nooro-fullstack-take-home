@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import z from "zod";
 import { createTaskSchema, taskIdParamsSchema, updateTaskSchema } from "../types/schema.ts";
 
@@ -13,16 +13,20 @@ export const TaskControllers = {
   findTasks: async (req: Request<{}, {}, {}, UpdateTaskBody>, res: Response) => {
     const { title, color, completed } = req.query;
 
-    try {
-      const tasks = await prisma.task.findMany({
-        where: {
-          title: title ? { contains: title } : undefined,
-          color,
-          completed
-        },
-      });
+    const query: Prisma.TaskWhereInput = {
+      title: title ? { contains: title } : undefined,
+      color,
+      completed
+    };
 
-      res.status(201).json(tasks);
+    try {
+      const [tasks, total, taskCompletedTotal] = await prisma.$transaction([
+       prisma.task.findMany({ where: query }),
+       prisma.task.count({ where: query}),
+       prisma.task.count({ where: { completed: true }})
+      ]);
+
+      res.status(201).json({ tasks, total, taskCompletedTotal });
     } catch (e) {
       console.error(e);
       res.status(500).json({ error: "Failed to fetch tasks" });

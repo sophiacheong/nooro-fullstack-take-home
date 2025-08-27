@@ -1,5 +1,5 @@
 import { ZodType, ZodError, z } from "zod";
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 interface ValidationSchemas {
   body?: ZodType<any>;
