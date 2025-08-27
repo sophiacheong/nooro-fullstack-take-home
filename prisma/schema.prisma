@@ -9,7 +9,7 @@ datasource db {
 
 model Task {
   id        String   @id @default(uuid())
-  title     String
+  title     String   @db.Text
   color     String
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
